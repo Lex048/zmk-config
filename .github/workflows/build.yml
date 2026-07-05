@@ -4,7 +4,7 @@ on:
   push:
   pull_request:
   workflow_dispatch:
-   inputs:
+    inputs:
       build_matrix_path:
         description: "Path to the build matrix file"
         default: "build.yaml"
@@ -59,7 +59,7 @@ jobs:
       build_matrix: ${{ env.build_matrix }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 # Обновлено с v3 до v4
 
       - name: Install yaml2json
         run: python3 -m pip install remarshal
@@ -98,10 +98,10 @@ jobs:
           echo "zephyr_version=${ZEPHYR_VERSION}" >> $GITHUB_ENV
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 # Обновлено с v3 до v4
 
       - name: Cache west modules
-        uses: actions/cache@v4
+        uses: actions/cache@v4 # Обновлено с v3.0.11 до v4
         continue-on-error: true
         env:
           cache_name: cache-zephyr-${{ env.zephyr_version }}-modules
@@ -165,7 +165,7 @@ jobs:
           fi
 
       - name: Archive (${{ env.display_name }})
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4 # Обновлено с v3 до v4
         with:
-          name: ${{ needs.env-setup.outputs.archive_name }}
+          name: ${{ env.artifact_name }} # Изменено с archive_name на artifact_name для избежания конфликта имен в v4
           path: build/artifacts
